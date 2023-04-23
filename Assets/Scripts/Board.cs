@@ -125,7 +125,6 @@ class Board
         if (gameBoard[plane, row, col].Equals(emptySpot) && isValidPlayer)
         {
             gameBoard[plane, row, col] = piece;
-            PeicePlaced.Invoke(plane, row, col);
             return true;
         }
         return false;

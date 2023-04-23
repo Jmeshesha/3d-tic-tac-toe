@@ -2205,12 +2205,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4dc25ca48d3c94baf35a6425384da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planes: 5
+  planes: 4
   rows: 4
   cols: 4
   startingPiece: 0
   inARow: 3
-  planeSpacing: 2
+  planeSpacing: 1.5
   pieceSize: 0.5
   planeThickness: 0.1
   planePrefab: {fileID: 121694240772110479, guid: a62afc4acc8b02f41a411c6c00e15241,
@@ -2848,6 +2848,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6639110558716569669, guid: 089ffd20c9e81514cbf70aac348a9b7e,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639110558716569669, guid: 089ffd20c9e81514cbf70aac348a9b7e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4eb298b475a51a540b70aa6df1d26a26, type: 2}
+    - target: {fileID: 6639110558716569669, guid: 089ffd20c9e81514cbf70aac348a9b7e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 91c8cbd50746d434ea4222e16faaff0c, type: 2}
     - target: {fileID: 6639110558716569670, guid: 089ffd20c9e81514cbf70aac348a9b7e,
         type: 3}
       propertyPath: m_Name

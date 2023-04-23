@@ -41,7 +41,7 @@ public class BoardPlane : MonoBehaviour
                 plane[i, j] = Instantiate(piecePrefab, transform);
                 plane[i, j].gameObject.transform.position = pos + transform.position;
                 plane[i, j].gameObject.transform.localScale = scale;
-                Debug.Log(pos);
+                plane[i, j].Setup(planeIdx, i, j);
 
             }
         }
@@ -55,7 +55,10 @@ public class BoardPlane : MonoBehaviour
         this.planeIdx = planeIdx;
 
         MakePieces(rows, cols, piecePrefab, pieceSize);
-
+        if (planeIdx == 0)
+        {
+           
+        }
 
     }
 
@@ -70,13 +73,9 @@ public class BoardPlane : MonoBehaviour
 
     }
 
-    private void OnHoveringPiece(int row, int col)
+    public Piece GetPiece(int row, int col)
     {
-        if (Input.GetMouseButton(0))
-        {
-            
-        }
-
+        return plane[row, col];
     }
 
     

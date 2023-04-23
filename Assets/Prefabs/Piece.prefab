@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6639110558716569669}
   - component: {fileID: 6639110558716569668}
   - component: {fileID: 5370843282461150983}
-  m_Layer: 0
-  m_Name: Sphere (1)
+  m_Layer: 3
+  m_Name: Piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 58fc7bffcf4964345a16dd6e61091f87, type: 2}
+  - {fileID: 2100000, guid: 4eb298b475a51a540b70aa6df1d26a26, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,3 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c5404773722bd44929104c698b4a8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverStrengthThreshhold: 0.01
+  matAlphaSpeed: 10
+  hoverAlphaSpeed: 20
+  hoverStrengthSpeed: 10

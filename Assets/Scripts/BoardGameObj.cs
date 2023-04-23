@@ -22,7 +22,9 @@ public class BoardGameObj : MonoBehaviour
 
     [SerializeField] private BoardPlane planePrefab;
 
-    [SerializeField] private Piece piecePrefab; 
+    [SerializeField] private Piece piecePrefab;
+
+    private List<BoardPlane> planeList = new List<BoardPlane>();
     // Start is called before the first frame update
     void Start()
     {
@@ -49,19 +51,29 @@ public class BoardGameObj : MonoBehaviour
             plane.gameObject.transform.localPosition = pos;
             plane.gameObject.transform.localScale = scale;
             plane.Setup(i, rows, cols, pieceSize, true, piecePrefab);
+            planeList.Add(plane);
         }
     }
     
 
 
-    private int OnPlacePiece(int plane, int row, int col)
+    public bool PlacePiece(Piece piece, int player)
     {
-        int piecePlaced = -1;
-        if(gameboard.PlacePiece(plane, row, col, pieces[currPiece])){
-            piecePlaced = currPiece;
-            currPiece = (currPiece + 1) % pieces.Length;
+        Vector3Int position = piece.GetCoords();
+        if(!gameboard.PlacePiece(position.x, position.y, position.z, pieces[player]))
+        {
+
+            return false;
         }
-        return piecePlaced;
+
+        piece.ShowPiece(player);
+        return true;
+    }
+
+    public bool PlacePiece(int plane, int row, int col, int player)
+    {
+        Piece piece = planeList[plane].GetPiece(row, col);
+        return PlacePiece(piece, player);
     }
     // Update is called once per frame
     void Update()
