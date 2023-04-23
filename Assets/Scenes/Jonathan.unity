@@ -2223,6 +2223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4dc25ca48d3c94baf35a6425384da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currPiece: 0
   planes: 5
   rows: 5
   cols: 3
@@ -2572,6 +2573,7 @@ GameObject:
   - component: {fileID: 2007698281}
   - component: {fileID: 2007698280}
   - component: {fileID: 2007698279}
+  - component: {fileID: 2007698282}
   - component: {fileID: 2007698278}
   m_Layer: 0
   m_Name: Background
@@ -2659,6 +2661,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &2007698282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007698277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e494a762fd85f49870fd5124a5e024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardManager: {fileID: 1518632331}
+  backgroundMat: {fileID: 2100000, guid: 7b8eba14f8691b34f82fa9b369e0910a, type: 2}
+  updateSpeed: 3
 --- !u!1 &2028932154
 GameObject:
   m_ObjectHideFlags: 0

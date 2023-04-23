@@ -22,7 +22,12 @@ public class PieceSelector : MonoBehaviour
     void Update()
     {
         CheckForHover();
-        if (Input.GetMouseButton(0) && selectedPiece != null)
+        if (Input.GetMouseButtonUp(0) && selectedPiece != null)
+        {
+            boardManager.PlacePiece(selectedPiece, 0);
+        }
+
+        if (Input.GetMouseButtonUp(1) && selectedPiece != null)
         {
             boardManager.PlacePiece(selectedPiece, 1);
         }

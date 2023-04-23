@@ -6,7 +6,7 @@ using System;
 public class BoardGameObj : MonoBehaviour
 {
     private char[] pieces = new char[] { 'r', 'g' };
-    private int currPiece;
+    public int currPiece;
     private Board gameboard;
     [SerializeField] private int planes;
 
@@ -59,6 +59,10 @@ public class BoardGameObj : MonoBehaviour
 
     public bool PlacePiece(Piece piece, int player)
     {
+        if(currPiece != player)
+        {
+            return false;
+        }
         Vector3Int position = piece.GetCoords();
         if(!gameboard.PlacePiece(position.x, position.y, position.z, pieces[player]))
         {
@@ -67,6 +71,7 @@ public class BoardGameObj : MonoBehaviour
         }
 
         piece.ShowPiece(player);
+        currPiece = (currPiece + 1) % pieces.Length;
         return true;
     }
 
@@ -75,6 +80,12 @@ public class BoardGameObj : MonoBehaviour
         Piece piece = planeList[plane].GetPiece(row, col);
         return PlacePiece(piece, player);
     }
+
+    public int GetCurrPlayer()
+    {
+        return currPiece;
+    }
+
     // Update is called once per frame
     void Update()
     {

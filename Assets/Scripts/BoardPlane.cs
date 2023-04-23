@@ -55,10 +55,7 @@ public class BoardPlane : MonoBehaviour
         this.planeIdx = planeIdx;
 
         MakePieces(rows, cols, piecePrefab, pieceSize);
-        if (planeIdx == 0)
-        {
-           
-        }
+        
 
     }
 

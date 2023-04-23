@@ -89,7 +89,7 @@ public class Piece : MonoBehaviour
         matAlphaTarget = 1;
 
     }
-
+    
     public void HidePiece()
     {
         matAlphaTarget = 0;
