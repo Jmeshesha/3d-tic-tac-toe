@@ -9,17 +9,27 @@ public class DynamicBackground : MonoBehaviour
     [SerializeField] private Material backgroundMat;
 
     [SerializeField] private float updateSpeed;
-    
+
+    [SerializeField] private float player1WinLerp;
+
+    [SerializeField] private float player2WinLerp;
+    private float targetLerpVal;
+    private float[] playerWinLerp;
+
     // Start is called before the first frame update
     void Start()
     {
         backgroundMat.SetFloat("_LerpVal", boardManager.GetCurrPlayer());
+        playerWinLerp = new float[]{ player1WinLerp, player2WinLerp};
+        boardManager.PlayerWin += PlayerWin;
+        boardManager.PlacePlayer += PlacePiece;
+        boardManager.PlayerTie += PlayerTie;
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateShaderVal("_LerpVal", boardManager.GetCurrPlayer(), updateSpeed);
+        UpdateShaderVal("_LerpVal", targetLerpVal, updateSpeed);
     }
 
 
@@ -34,4 +44,20 @@ public class DynamicBackground : MonoBehaviour
         backgroundMat.SetFloat(fieldName, newVal);
 
     }
+
+    private void PlacePiece(int player)
+    {
+        targetLerpVal = 1 - player;
+    }
+
+    private void PlayerWin(int player)
+    {
+        targetLerpVal = playerWinLerp[player];
+    }
+
+    private void PlayerTie()
+    {
+        targetLerpVal = 0.5f;
+    }
 }
+

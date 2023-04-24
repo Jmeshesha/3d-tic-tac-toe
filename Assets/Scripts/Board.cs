@@ -130,7 +130,27 @@ class Board
         return false;
     }
 
-    public bool IsWinAt(int plane, int row, int col)
+
+    public bool IsTie()
+    {
+        for(int plane = 0; plane < gameBoard.GetLength(0); plane++)
+        {
+            for (int row = 0; row < gameBoard.GetLength(1); row++)
+            {
+                for (int col = 0; col < gameBoard.GetLength(2); col++)
+                {
+                    char piece = gameBoard[plane, row, col];
+                    if(!piece.Equals(redPlayer) && !piece.Equals(greenPlayer))
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public bool IsWinAt(int plane, int row, int col, char player)
     {
         if (!InBounds(plane, row, col))
         {
@@ -138,7 +158,6 @@ class Board
         }
 
         Vector3Int pos = new Vector3Int(plane, row, col);
-        char player = gameBoard[plane, row, col];
 
         for (int deltaPlane = -1; deltaPlane <= 1; deltaPlane++)
         {

@@ -2224,8 +2224,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currPiece: 0
-  planes: 5
-  rows: 5
+  planes: 1
+  rows: 3
   cols: 3
   startingPiece: 0
   inARow: 3
@@ -2676,6 +2676,8 @@ MonoBehaviour:
   boardManager: {fileID: 1518632331}
   backgroundMat: {fileID: 2100000, guid: 7b8eba14f8691b34f82fa9b369e0910a, type: 2}
   updateSpeed: 3
+  player1WinLerp: -0.5
+  player2WinLerp: 1.5
 --- !u!1 &2028932154
 GameObject:
   m_ObjectHideFlags: 0

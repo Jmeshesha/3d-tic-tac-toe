@@ -5,6 +5,13 @@ using System;
 
 public class BoardGameObj : MonoBehaviour
 {
+    public delegate void OnPlayerAction(int player);
+
+    public OnPlayerAction PlayerWin;
+    public OnPlayerAction PlacePlayer;
+
+    public Action PlayerTie;
+
     private char[] pieces = new char[] { 'r', 'g' };
     public int currPiece;
     private Board gameboard;
@@ -24,6 +31,9 @@ public class BoardGameObj : MonoBehaviour
 
     [SerializeField] private Piece piecePrefab;
 
+
+    private bool gameOver;
+
     private List<BoardPlane> planeList = new List<BoardPlane>();
     // Start is called before the first frame update
     void Start()
@@ -31,7 +41,7 @@ public class BoardGameObj : MonoBehaviour
         gameboard = new Board(planes, rows, cols, inARow, pieces[0], pieces[1], ' ');
         currPiece = startingPiece;
         MakePlanes();
-
+        gameOver = false;
 
     }
 
@@ -59,7 +69,7 @@ public class BoardGameObj : MonoBehaviour
 
     public bool PlacePiece(Piece piece, int player)
     {
-        if(currPiece != player)
+        if(gameOver || currPiece != player)
         {
             return false;
         }
@@ -72,6 +82,16 @@ public class BoardGameObj : MonoBehaviour
 
         piece.ShowPiece(player);
         currPiece = (currPiece + 1) % pieces.Length;
+        PlacePlayer?.Invoke(player);
+        if (gameboard.IsWinAt(position.x, position.y, position.z, pieces[player]))
+        {
+            gameOver = true;
+            PlayerWin?.Invoke(player);
+        } else if(gameboard.IsTie())
+        {
+            gameOver = true;
+            PlayerTie?.Invoke();
+        }
         return true;
     }
 
