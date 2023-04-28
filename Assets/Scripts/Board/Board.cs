@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
+
 class Board
 {
     public delegate void OnPlaced(int plane, int row, int col);
@@ -9,6 +11,7 @@ class Board
     char emptySpot;
     private int inARow;
     private char[,,] gameBoard;
+
     public Board(int planes, int rows, int columns, int inARow, char redPlayer, char greenPlayer, char emptySpot)
     {
         gameBoard = new char[planes, rows, columns];
@@ -125,6 +128,7 @@ class Board
         if (gameBoard[plane, row, col].Equals(emptySpot) && isValidPlayer)
         {
             gameBoard[plane, row, col] = piece;
+
             return true;
         }
         return false;

@@ -45,9 +45,9 @@ public class DynamicBackground : MonoBehaviour
 
     }
 
-    private void PlacePiece(int player)
+    private void PlacePiece(int nextplayer)
     {
-        targetLerpVal = 1 - player;
+        targetLerpVal = nextplayer;
     }
 
     private void PlayerWin(int player)

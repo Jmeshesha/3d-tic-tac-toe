@@ -1,10 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
+
 
 public class Piece : MonoBehaviour
 {
 
+
+    
     private Vector3Int coordinates;
     private int hoverAlphaTarget = 0;
     private int hoverStrengthTarget = 10;
@@ -18,6 +21,7 @@ public class Piece : MonoBehaviour
 
     [SerializeField] private float hoverAlphaSpeed;
     [SerializeField] private float hoverStrengthSpeed;
+
 
     private int hoverState = 0;
 
