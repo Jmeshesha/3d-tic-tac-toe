@@ -25,7 +25,7 @@ public class AIPlayer : MonoBehaviour
     void Update()
     {
         if (isTurn) {
-            //PlaceMoveFromAi();
+            PlaceMoveFromAi();
             isTurn = false;
         }
     }
@@ -49,7 +49,7 @@ public class AIPlayer : MonoBehaviour
         board.thinkTime = thinkTime;
         RequestHelper request = new RequestHelper
         {
-            Uri = basePath + "/GetAiMove",
+            Uri = basePath + "/PlayNextMove",
             Body = board,
             EnableDebug = true
         };
