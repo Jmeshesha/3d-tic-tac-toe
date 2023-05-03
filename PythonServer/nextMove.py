@@ -1,3 +1,6 @@
+import time
+from timer import Timer
+
 # takes in the current board and heuristic, and returns best possible move
 # A positive value of +1 is given to every n-in-a-row the player has, and a negative value of -1 is given
 # for every n-in-a-row the opponent has
@@ -13,6 +16,7 @@ HEURISTIC_3 = "counting-neighbors"
 # board example :  [[["R", G, " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]]]
 # timeInterval : Float
 # currPlayer : "R" || "G"
+# n : size of board
 
 # TODO
 def get_next_move(board, heuristic, timeInterval, currPlayer, n):
@@ -21,6 +25,7 @@ def get_next_move(board, heuristic, timeInterval, currPlayer, n):
     # NOTES
     # heuristic will be a string determining which evaluation function we use
     best_move = (0,position) # save best_move (value, position)
+    t = Timer()
     # start time
     # loop through available moves and check evaluation value with alpha beta minimax iterative deepening
         # call on get_eval_value as looping through
@@ -28,20 +33,20 @@ def get_next_move(board, heuristic, timeInterval, currPlayer, n):
     # returns best move at the end
     return best_move[1]
 
-def get_eval_value(new_board, heuristic, currPlayer):
+def get_eval_value(new_board, heuristic, currPlayer, n):
     # check string, call on eval function
     if heuristic == HEURISTIC_1:
-        return eval_function_1(new_board, currPlayer)
+        return counting_n_rows_eval_function(new_board, currPlayer, n)
+    if heuristic == HEURISTIC_2:
+        counting_marks_eval_function(new_board, currPlayer, n)
+    if heuristic == HEURISTIC_3:
+        counting_neighbors_eval_function(new_board, currPlayer, n)
     else:
-        print("Invalid heuristic")
-    # else if heuristic == HEURISTIC_2:
-    #     eval_function_2(position)
-    # else if:
-    #     eval_function_3(position)
+        onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics")
 
 
 # TODO check diagonals on different planes
-def counting_rows_eval_function(new_board, currPlayer):
+def counting_n_rows_eval_function(new_board, currPlayer, n):
     # if there's an error
     col = 0
     row = 0
@@ -87,7 +92,7 @@ def counting_rows_eval_function(new_board, currPlayer):
             # check vertically on different planes
             if plane == 0:
                 # check if loss vertically
-                if new_board[1][row][col] == current_value and new_board[2][row][col] == current_value
+                if new_board[1][row][col] == current_value and new_board[2][row][col] == current_value:
                     score = -1000
                     print(score)
                     break
@@ -121,7 +126,7 @@ def counting_rows_eval_function(new_board, currPlayer):
         # reached the end of the board so we break out of while loop
         if plane == 2 and row == 2 and col == 3:
             # check for diagonals on different planes
-            if new_board
+            # if new_board:
             break
 
         # reached the end of the plane
@@ -154,9 +159,21 @@ def counting_rows_eval_function(new_board, currPlayer):
             continue
     return score
 
-counting_rows_eval_function([[["R", "R", "G"], [" ", "R", " "], ["R", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R")
-
+# counting_rows_eval_function([[["R", "R", "G"], [" ", "R", " "], ["R", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R")
 
 def counting_marks_eval_function(new_board, currPlayer, n):
+    score = 0
+    for plane, plane_value in enumerate(new_board):
+        for row, row_value in enumerate(plane_value):
+            for col, col_value in enumerate(row_value):
+                if col_value == currPlayer:
+                    score += 1
+                if col_value != currPlayer and col_value != " ":
+                    score -= 1
+    return score
 
-# def eval_function_3(self, position):
+counting_marks_eval_function([[["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]]], "R", 3)
+counting_marks_eval_function([[["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", "G", " "], ["R", "G", " "]]], "R", 3)
+
+def counting_neighbors_eval_function(new_board, currPlayer, n):
+    return None
