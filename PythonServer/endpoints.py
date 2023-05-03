@@ -22,8 +22,12 @@ class PlayNextMoveEndpoint:
         pass
 
     def OnRequest(self, header, body, onError):
-        print(body)
-        return Move(chr(body["currPlayer"]), 1, 0, 0).BuildResponse()
+        try:
+            print(body)
+            # Example: Move(currPlayer, X-coordinate, Y-corrdinate, Z-coordinate)
+            return Move(chr(body["currPlayer"]), 1, 0, 0).BuildResponse()
+        except:
+            onError(400, "Invalid request", "Request does not contain required fields in body")
         
 
 class PlayAIMatchEndpoint:
