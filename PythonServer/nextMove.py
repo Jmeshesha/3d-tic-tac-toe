@@ -1,5 +1,5 @@
 import time
-from timer import Timer
+# import reader from feed
 
 # takes in the current board and heuristic, and returns best possible move
 # A positive value of +1 is given to every n-in-a-row the player has, and a negative value of -1 is given
@@ -20,18 +20,30 @@ HEURISTIC_3 = "counting-neighbors"
 
 # TODO
 def get_next_move(board, heuristic, timeInterval, currPlayer, n):
-    if heuristic != HEURISTIC_1 or heuristic != HEURISTIC_2 or heuristic != HEURISTIC_3:
-        return "Please enter a correct heuristic function"
+    if heuristic != HEURISTIC_1 and heuristic != HEURISTIC_2 and heuristic != HEURISTIC_3:
+        onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics")
     # NOTES
     # heuristic will be a string determining which evaluation function we use
-    best_move = (0,position) # save best_move (value, position)
-    t = Timer()
+    best_move = (0,0) # save best_move (value, position)
+    start = time.perf_counter()
+    print(start)
+    stop = time.perf_counter()
+    print(stop)
     # start time
     # loop through available moves and check evaluation value with alpha beta minimax iterative deepening
         # call on get_eval_value as looping through
     # do minimax until time runs out
     # returns best move at the end
     return best_move[1]
+
+def minimax(isMaxTurn, currPlayer, board):
+    if isDraw(board) == True:
+        return 0
+    elif isWin(board) == True:
+        return 1
+    elif isLoser(board) == True:
+        return -1
+    
 
 def get_eval_value(new_board, heuristic, currPlayer, n):
     # check string, call on eval function
@@ -172,8 +184,12 @@ def counting_marks_eval_function(new_board, currPlayer, n):
                     score -= 1
     return score
 
-counting_marks_eval_function([[["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]]], "R", 3)
-counting_marks_eval_function([[["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", "G", " "], ["R", "G", " "]]], "R", 3)
+# counting_marks_eval_function([[["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]]], "R", 3)
+# counting_marks_eval_function([[["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", "G", " "], ["R", "G", " "]]], "R", 3)
 
 def counting_neighbors_eval_function(new_board, currPlayer, n):
     return None
+
+
+
+get_next_move([[["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]]], "counting-marks", 2, "R", 3)
