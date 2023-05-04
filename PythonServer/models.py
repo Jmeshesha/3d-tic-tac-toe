@@ -2,7 +2,7 @@ class Board:
     def __init__(self):
         pass       
     def BuildObjectFromRequest(self, request):
-        required_fields = ["board", "planes", "rows", "cols"]
+        required_fields = ["board", "planes", "rows", "cols", "InARow"]
         for field in required_fields:
             if field not in request:
                 return False
@@ -10,6 +10,7 @@ class Board:
         self.rows = request["row"] 
         self.cols = request["cols"]
         self.board = []
+        self.inARow = request["inARow"]
         oldBoard = request["board"]
         counter = 0
         for i in range(self.planes):
@@ -20,8 +21,6 @@ class Board:
                     self.board[i][j][k] = chr(oldBoard[counter])
                     counter += 1
         return True
-    def IsTerminal(self):
-        pass
     
     def BuildResponse(self):
         return None
