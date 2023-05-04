@@ -36,15 +36,145 @@ def get_next_move(board, heuristic, timeInterval, currPlayer, n):
     # returns best move at the end
     return best_move[1]
 
-def minimax(isMaxTurn, currPlayer, board):
-    if isDraw(board) == True:
-        return 0
-    elif isWin(board) == True:
+# NEED TO FINISH
+def minimax(isMaxTurn, currPlayer, board, n):
+    # win 
+    if isTerminal(board, currPlayer, n) == 1:
         return 1
-    elif isLoser(board) == True:
+    # loss 
+    elif isTerminal(board, currPlayer, n) == -1:
         return -1
-    
+    # tie
+    elif isTerminal(board, currPlayer, n) == 0:
+        return 0
 
+# NEED TO TEST 
+def isTerminal(board, currPlayer, n):
+    plane = 0
+    row = 0
+    col = 0
+    empty_spaces = 0
+    while plane <= n:
+        current_value = board[plane][row][col]
+        # check spaces
+        if current_value == " ":
+            empty_spaces += 1
+            col += 1
+            continue
+        if row > n and col > n:
+            col = 0
+            row = 0
+            plane += 1
+        if col > n:
+            col = 0
+            row += 1
+        # check for win or loss in each row
+        if col == 0:
+            temp_col = 1
+            while temp_col <= n:
+                if board[plane][row][temp_col] == current_value:
+                    temp_col += 1
+                else:
+                    break
+            if temp_col > n and current_value == currPlayer:
+                return 1
+            if temp_col > n and current_value != currPlayer:
+                return -1
+
+            
+        # check for win or loss vertically on one plane
+        if row == 0:
+            temp_row = 1
+            while temp_row <= n:
+                if board[plane][temp_row][col] == current_value:
+                    temp_row += 1
+                else:
+                    break
+            if temp_row > n and current_value == currPlayer:
+                return 1
+            if temp_row > n and current_value != currPlayer:
+                return -1
+
+        if plane == 0:
+            # check for win or loss vertically on different planes
+            temp_plane = 1
+            while temp_plane <= n:
+                if board[temp_plane][row][col] == current_value:
+                    temp_plane += 1
+                else:
+                    break
+            if temp_plane > n and current_value == currPlayer:
+                return 1
+            if temp_plane > n and current_value != currPlayer:
+                return -1
+        row += 1
+
+    if empty_spaces == 0:
+        return 0
+    return None
+
+def check_diagonals_on_plane(board, currPlayer, n, plane):
+    # top left down
+    row = 0
+    col = 0
+    value_to_check = board[plane][row][col]
+    while row <= n:
+        row += 1
+        col += 1
+        if board[plane][row][col] == value_to_check:
+            continue
+        else:
+            break
+    if row > n:
+        if value_to_check == currPlayer:
+            return 1
+        else:
+            return -1
+
+    # top right down
+    row = 0
+    col = -1
+    value_to_check = board[plane][row][col]
+    while row <= n:
+        row += 1
+        col -= 1
+        if board[plane][row][col] == value_to_check:
+            continue
+        else:
+            break
+    if row > n:
+        if value_to_check == currPlayer:
+            return 1
+        else:
+            return -1
+
+# FINISH
+def check_diagonals_on_sides(board, currPlayer, n):
+    row = 0
+    col = 0
+    plane = 0
+    while plane <= n:
+        # when row = 0
+        if row == 0 and col == 0 and plane == 0:
+            value_to_check = board[0][0][0]
+            while temp_plane <= n:
+                col += 1
+                temp_plane += 1
+                if board[temp_plane][row][col] == value_to_check:
+                    continue
+                else:
+                    break
+            if temp_plane > n and value_to_check == currPlayer:
+                return 1
+            if temp_plane > n and value_to_check != currPlayer:
+                return -1
+        # when row = n
+        # when col = 0
+        # when col = n
+# TODO 
+def check_diagonals_on_different_planes(board, currPlayer, n):
+    return None
+    
 def get_eval_value(new_board, heuristic, currPlayer, n):
     # check string, call on eval function
     if heuristic == HEURISTIC_1:
