@@ -119,183 +119,220 @@ def check_diagonals_on_plane(board, currPlayer, n, plane):
     row = 0
     col = 0
     value_to_check = board[plane][row][col]
-    while row < (n - 1):
-        row += 1
-        col += 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if row == n - 1:
-        if value_to_check == currPlayer:
-            return 1
-        else:
-            return -1
+    if value_to_check != " ":
+        while row < (n - 1):
+            row += 1
+            col += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if row == n - 1:
+            if value_to_check == currPlayer:
+                return 1
+            else:
+                return -1
 
     # top right down
     row = 0
     col = n - 1
     value_to_check = board[plane][row][col]
-    while row < (n - 1):
-        row += 1
-        col -= 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if row == n - 1:
-        if value_to_check == currPlayer:
-            return 1
-        else:
-            return -1
+    if value_to_check != " ":
+        while row < (n - 1):
+            row += 1
+            col -= 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if row == n - 1:
+            if value_to_check == currPlayer:
+                return 1
+            else:
+                return -1
 # TESTS
+# print("Tests on single planes:")
 # win (1)
-print(check_diagonals_on_plane([[["R", " ", " "], [" ", "R", " "], [" ", " ", "R"]], [[" ", " ", "G"], [" ", "G", " "], ["G", " ", " "]], [[" ", " ", "R"], [" ", "R", " "], ["R", " ", " "]]], "R", 3, 0))
-# loss (-1)
-print(check_diagonals_on_plane([[["R", " ", " "], [" ", "R", " "], [" ", " ", "R"]], [[" ", " ", "G"], [" ", "G", " "], ["G", " ", " "]], [[" ", " ", "R"], [" ", "R", " "], ["R", " ", " "]]], "R", 3, 1))
-# win (1)
-print(check_diagonals_on_plane([[["R", " ", " "], [" ", "R", " "], [" ", " ", "R"]], [[" ", " ", "G"], [" ", "G", " "], ["G", " ", " "]], [[" ", " ", "R"], [" ", "R", " "], ["R", " ", " "]]], "R", 3, 2))
+# print(check_diagonals_on_plane([[["R", " ", " "], [" ", "R", " "], [" ", " ", "R"]], [[" ", " ", "G"], [" ", "G", " "], ["G", " ", " "]], [[" ", " ", "R"], [" ", "R", " "], ["R", " ", " "]]], "R", 3, 0))
+# # loss (-1)
+# print(check_diagonals_on_plane([[["R", " ", " "], [" ", "R", " "], [" ", " ", "R"]], [[" ", " ", "G"], [" ", "G", " "], ["G", " ", " "]], [[" ", " ", "R"], [" ", "R", " "], ["R", " ", " "]]], "R", 3, 1))
+# # win (1)
+# print(check_diagonals_on_plane([[["R", " ", " "], [" ", "R", " "], [" ", " ", "R"]], [[" ", " ", "G"], [" ", "G", " "], ["G", " ", " "]], [[" ", " ", "R"], [" ", "R", " "], ["R", " ", " "]]], "R", 3, 2))
 
 
-# TEST
 def check_diagonals_on_sides(board, currPlayer, n):
     row = 0
     col = 0
     plane = 0
     # when row = 0 an col = 0 (Front - left top down)
     value_to_check = board[0][0][0]
-    while plane < n:
-        col += 1
-        plane += 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if plane == n and value_to_check == currPlayer:
-        return 1
-    if plane == n and value_to_check != currPlayer:
-        return -1
+    if value_to_check != " ":
+        while plane < (n - 1):
+            col += 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
 
     row = 0
     col = n - 1
     plane = 0
     # when row = 0 and col = n (Front - right top down)
     value_to_check = board[0][row][col]
-    while plane < n:
-        col -= 1
-        plane += 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if plane == n and value_to_check == currPlayer:
-        return 1
-    if plane == n and value_to_check != currPlayer:
-        return -1
+    if value_to_check != " ":
+        while plane < (n - 1):
+            col -= 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
     
     row = 0
     col = 0
     plane = 0
     # col = 0 and row = 0 (Left Side - left top down)
     value_to_check = board[0][0][0]
-    while row < n:
-        row += 1
-        plane += 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if row == n and value_to_check == currPlayer:
-        return 1
-    if row == n and value_to_check != currPlayer:
-        return -1
+    if value_to_check != " ":
+        while plane < (n - 1):
+            row += 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
 
     row = n - 1
     col = 0
     plane = 0
     # col = 0 and row = n (Left Side - right top down)
     value_to_check = board[plane][row][col]
-    while plane < n:
-        row -= 1
-        plane += 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if plane == n and value_to_check == currPlayer:
-        return 1
-    if plane == n and value_to_check != currPlayer:
-        return -1
+    if value_to_check != " ":
+        while plane < (n - 1):
+            row -= 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
 
     row = 0
     col = n - 1
     plane = 0
     # when col = n and row = 0 (Right Side - left top down)
     value_to_check = board[0][row][col]
-    while plane < n:
-        row += 1
-        plane += 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if plane == n and value_to_check == currPlayer:
-        return 1
-    if plane == n and value_to_check != currPlayer:
-        return -1
+    if value_to_check != " ":
+        while plane < (n - 1):
+            row += 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
     
     row = n - 1
     col = n - 1
     plane = 0
     # when col = n and row = n (Right Side - right top down)
     value_to_check = board[0][row][col]
-    while plane < n:
-        row -= 1
-        plane += 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if plane == n and value_to_check == currPlayer:
-        return 1
-    if plane == n and value_to_check != currPlayer:
-        return -1
+    if value_to_check != " ":
+        while plane < (n - 1):
+            row -= 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
 
     row = n - 1
     col = 0
     plane = 0
     # when col = 0 and row = n (Back Side - left top down)
     value_to_check = board[0][row][col]
-    while plane < n:
-        col += 1
-        plane += 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if plane == n and value_to_check == currPlayer:
-        return 1
-    if plane == n and value_to_check != currPlayer:
-        return -1
+    if value_to_check != " ":
+        while plane < (n - 1):
+            col += 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
 
     row = n - 1
     col = n - 1
     plane = 0
     # when col = n and row = n (Back Side - right top down)
     value_to_check = board[0][row][col]
-    while plane < n:
-        col -= 1
-        plane += 1
-        if board[plane][row][col] == value_to_check:
-            continue
-        else:
-            break
-    if plane == n and value_to_check == currPlayer:
-        return 1
-    if plane == n and value_to_check != currPlayer:
-        return -1
+    if value_to_check != " ":
+        while plane < (n - 1):
+            col -= 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
     # No wins or losses
     return None
+
+# TESTS
+# win (1) Front
+# print("Front Sides:")
+# print(check_diagonals_on_sides([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", "R", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", "R"], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+# # loss (-1) Front
+# print(check_diagonals_on_sides([[[" ", " ", "G"], [" ", " ", " "], [" ", " ", " "]], [[" ", "G", " "], [" ", " ", " "], [" ", " ", " "]], [["G", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+
+# # win (1) Left Side
+# print("Left Sides:")
+# print(check_diagonals_on_sides([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], ["R", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]]], "R", 3))
+# # loss (-1) Left Side
+# print(check_diagonals_on_sides([[[" ", " ", " "], [" ", " ", " "], ["G", " ", " "]], [[" ", " ", " "], ["G", " ", " "], [" ", " ", " "]], [["G", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+
+# print("Right Sides:")
+# # win (1) Right Side
+# print(check_diagonals_on_sides([[[" ", " ", "R"], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", "R"], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]]], "R", 3))
+# # loss (-1) Right Side
+# print(check_diagonals_on_sides([[[" ", " ", " "], [" ", " ", " "], [" ", " ", "G"]], [[" ", " ", " "], [" ", " ", "G"], [" ", " ", " "]], [[" ", " ", "G"], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+
+# print("Back Sides:")
+# # win (1) Back
+# print(check_diagonals_on_sides([[[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", "R", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]]], "R", 3))
+# # loss (-1) Back
+# print(check_diagonals_on_sides([[[" ", " ", " "], [" ", " ", " "], [" ", " ", "G"]], [[" ", " ", " "], [" ", " ", " "], [" ", "G", " "]], [[" ", " ", " "], [" ", " ", " "], ["G", " ", " "]]], "R", 3))
+
+
 # TODO 
 def check_diagonals_on_different_planes(board, currPlayer, n):
     return None
