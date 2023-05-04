@@ -1,10 +1,30 @@
 class Board:
     def __init__(self):
+        pass       
+    def BuildObjectFromRequest(self, request):
+        required_fields = ["board", "planes", "rows", "cols"]
+        for field in required_fields:
+            if field not in request:
+                return False
+        self.planes = request["planes"]
+        self.rows = request["row"] 
+        self.cols = request["cols"]
+        self.board = []
+        oldBoard = request["board"]
+        counter = 0
+        for i in range(self.planes):
+            self.board.append([])
+            for j in range(self.rows):
+                self.board[i].append([])
+                for k in range(self.cols):
+                    self.board[i][j][k] = chr(oldBoard[counter])
+                    counter += 1
+        return True
+    def IsTerminal(self):
         pass
-    def BuildObjectFromRequest(self):
-        pass
+    
     def BuildResponse(self):
-        pass
+        return None
 
 class Move:
     def __init__(self, request):
