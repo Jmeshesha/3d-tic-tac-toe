@@ -1,6 +1,7 @@
 class Board:
-    def __init__(self):
-        pass       
+    def __init__(self, request):
+        if not self.BuildObjectFromRequest(request):
+             raise Exception("Request does not contain required fields for board!") 
     def BuildObjectFromRequest(self, request):
         required_fields = ["board", "planes", "rows", "cols", "InARow"]
         for field in required_fields:
@@ -28,7 +29,7 @@ class Board:
 class Move:
     def __init__(self, request):
         if not self.BuildObjectFromRequest(request):
-            raise Exception("Request does not contain required fields!")    
+            raise Exception("Request does not contain required fields for move!")    
 
     def __init__(self, player, plane, row, col):
         self.player = player
