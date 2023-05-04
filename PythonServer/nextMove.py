@@ -48,70 +48,90 @@ def minimax(isMaxTurn, currPlayer, board, n):
     elif isTerminal(board, currPlayer, n) == 0:
         return 0
 
-# NEED TO TEST 
-def isTerminal(board, currPlayer, n):
-    plane = 0
-    row = 0
-    col = 0
-    empty_spaces = 0
-    while plane <= n:
-        current_value = board[plane][row][col]
-        # check spaces
-        if current_value == " ":
-            empty_spaces += 1
-            col += 1
-            continue
-        if row > n and col > n:
-            col = 0
-            row = 0
-            plane += 1
-        if col > n:
-            col = 0
-            row += 1
-        # check for win or loss in each row
-        if col == 0:
-            temp_col = 1
-            while temp_col <= n:
-                if board[plane][row][temp_col] == current_value:
-                    temp_col += 1
-                else:
-                    break
-            if temp_col > n and current_value == currPlayer:
-                return 1
-            if temp_col > n and current_value != currPlayer:
-                return -1
+# # NEED TO TEST 
+# def isTerminal(board, currPlayer, n):
+#     plane = 0
+#     row = 0
+#     col = 0
+#     empty_spaces = 0
+#     while plane < n - 1:
+#         print(plane, row, col)
+#         if row == n - 1 and col == n:
+#             col = 0
+#             row = 0
+#             check = check_diagonals_on_plane(board, currPlayer, n, plane)
+#             if check == 1:
+#                 return 1
+#             if check == -1:
+#                 return -1
+#             plane += 1
+#         if col == n:
+#             col = 0
+#             row += 1
+        
+#         current_value = board[plane][row][col]
+#         # check spaces
+#         if current_value == " ":
+#             empty_spaces += 1
+#             col += 1
+#             continue
+
+#         # check for win or loss in each row
+#         if col == 0:
+#             temp_col = 1
+#             while temp_col <= n:
+#                 if board[plane][row][temp_col] == current_value:
+#                     temp_col += 1
+#                 else:
+#                     break
+#             if temp_col > n and current_value == currPlayer:
+#                 return 1
+#             if temp_col > n and current_value != currPlayer:
+#                 return -1
 
             
-        # check for win or loss vertically on one plane
-        if row == 0:
-            temp_row = 1
-            while temp_row <= n:
-                if board[plane][temp_row][col] == current_value:
-                    temp_row += 1
-                else:
-                    break
-            if temp_row > n and current_value == currPlayer:
-                return 1
-            if temp_row > n and current_value != currPlayer:
-                return -1
+#         # check for win or loss vertically on one plane
+#         if row == 0:
+#             temp_row = 1
+#             while temp_row <= n:
+#                 if board[plane][temp_row][col] == current_value:
+#                     temp_row += 1
+#                 else:
+#                     break
+#             if temp_row > n and current_value == currPlayer:
+#                 return 1
+#             if temp_row > n and current_value != currPlayer:
+#                 return -1
 
-        if plane == 0:
-            # check for win or loss vertically on different planes
-            temp_plane = 1
-            while temp_plane <= n:
-                if board[temp_plane][row][col] == current_value:
-                    temp_plane += 1
-                else:
-                    break
-            if temp_plane > n and current_value == currPlayer:
-                return 1
-            if temp_plane > n and current_value != currPlayer:
-                return -1
-        row += 1
+#         if plane == 0:
+#             # check for win or loss vertically on different planes
+#             temp_plane = 1
+#             while temp_plane <= n:
+#                 if board[temp_plane][row][col] == current_value:
+#                     temp_plane += 1
+#                 else:
+#                     break
+#             if temp_plane > n and current_value == currPlayer:
+#                 return 1
+#             if temp_plane > n and current_value != currPlayer:
+#                 return -1
+#         col += 1
 
-    if empty_spaces == 0:
-        return 0
-    return None
+#     check2 = check_diagonals_on_different_planes(board, currPlayer, n)
+#     if check == 1:
+#         return 1
+#     if check == -1:
+#         return -1
+
+#     check3 = check_diagonals_on_sides(board, currPlayer, n)
+#     if check == 1:
+#         return 1
+#     if check == -1:
+#         return -1
+
+#     if empty_spaces == 0:
+#         return 0
+#     return None
 
 
 def check_diagonals_on_plane(board, currPlayer, n, plane):
@@ -150,9 +170,10 @@ def check_diagonals_on_plane(board, currPlayer, n, plane):
                 return 1
             else:
                 return -1
+    return None
 # TESTS
 # print("Tests on single planes:")
-# win (1)
+# # win (1)
 # print(check_diagonals_on_plane([[["R", " ", " "], [" ", "R", " "], [" ", " ", "R"]], [[" ", " ", "G"], [" ", "G", " "], ["G", " ", " "]], [[" ", " ", "R"], [" ", "R", " "], ["R", " ", " "]]], "R", 3, 0))
 # # loss (-1)
 # print(check_diagonals_on_plane([[["R", " ", " "], [" ", "R", " "], [" ", " ", "R"]], [[" ", " ", "G"], [" ", "G", " "], ["G", " ", " "]], [[" ", " ", "R"], [" ", "R", " "], ["R", " ", " "]]], "R", 3, 1))
@@ -306,13 +327,6 @@ def check_diagonals_on_sides(board, currPlayer, n):
             return -1
     # No wins or losses
     return None
-
-# TESTS
-# win (1) Front
-# print("Front Sides:")
-# print(check_diagonals_on_sides([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", "R", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", "R"], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
-# # loss (-1) Front
-# print(check_diagonals_on_sides([[[" ", " ", "G"], [" ", " ", " "], [" ", " ", " "]], [[" ", "G", " "], [" ", " ", " "], [" ", " ", " "]], [["G", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
 
 # # win (1) Left Side
 # print("Left Sides:")
@@ -492,24 +506,117 @@ def check_diagonals_on_different_planes(board, currPlayer, n):
 
     return None
 
-# win (1) 
-# print("Top Left Corner:")
-# print(check_diagonals_on_different_planes([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]]], "R", 3))
-# print("Top Right Corner:")
-# print(check_diagonals_on_different_planes([[[" ", " ", "R"], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]]], "R", 3))
-# print("Bottom Left Corner:")
-# print(check_diagonals_on_different_planes([[[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]]], "R", 3))
-# print("Bottom Right Corner:")
-# print(check_diagonals_on_different_planes([[[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [["R", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+def isTerminal(board, currPlayer, n):
+    plane = 0
+    row = 0
+    col = 0
+    empty_spaces = 0
+    while plane != n:
+        if row == n - 1 and col == n -1:
+            col = 0
+            row = 0
+            check = check_diagonals_on_plane(board, currPlayer, n, plane)
+            if check == 1:
+                return 1
+            if check == -1:
+                return -1
+            plane += 1
+            continue
 
-# print("Front Side:")
-# print(check_diagonals_on_different_planes([[[" ", "R", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", "R", " "]]], "R", 3))
-# print("Left Side:")
-# print(check_diagonals_on_different_planes([[[" ", " ", " "], ["R", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", "R"], [" ", " ", " "]]], "R", 3))
-# print("Right Side:")
-# print(check_diagonals_on_different_planes([[[" ", " ", " "], [" ", " ", "R"], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], ["R", " ", " "], [" ", " ", " "]]], "R", 3))
-# print("Back Side:")
-# print(check_diagonals_on_different_planes([[[" ", " ", " "], [" ", " ", " "], [" ", "R", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", "R", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+        if col == n - 1:
+            col = 0
+            row += 1
+            continue
+
+        current_value = board[plane][row][col]
+        # check spaces
+        if current_value == " ":
+            empty_spaces += 1
+            col += 1
+            continue
+
+        # check for win or loss in each row
+        if col == 0:
+            temp_col = 1
+            while temp_col <= n:
+                if board[plane][row][temp_col] == current_value:
+                    temp_col += 1
+                else:
+                    break
+            if temp_col > n and current_value == currPlayer:
+                return 1
+            if temp_col > n and current_value != currPlayer:
+                return -1
+
+            
+        # check for win or loss vertically on one plane
+        if row == 0:
+            temp_row = 1
+            while temp_row <= n:
+                if board[plane][temp_row][col] == current_value:
+                    temp_row += 1
+                else:
+                    break
+            if temp_row > n and current_value == currPlayer:
+                return 1
+            if temp_row > n and current_value != currPlayer:
+                return -1
+
+        if plane == 0:
+            # check for win or loss vertically on different planes
+            temp_plane = 1
+            while temp_plane <= n:
+                if board[temp_plane][row][col] == current_value:
+                    temp_plane += 1
+                else:
+                    break
+            if temp_plane > n and current_value == currPlayer:
+                return 1
+            if temp_plane > n and current_value != currPlayer:
+                return -1
+        col += 1
+
+    check2 = check_diagonals_on_different_planes(board, currPlayer, n)
+    if check2 == 1:
+        return 1
+    if check2 == -1:
+        return -1
+
+    check3 = check_diagonals_on_sides(board, currPlayer, n)
+    if check3 == 1:
+        return 1
+    if check3 == -1:
+        return -1
+
+    if empty_spaces == 0:
+        return 0
+    return None
+
+# TESTS
+# win (1) Front
+# print("Front Sides:")
+print(isTerminal([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]]], "R", 3))
+# loss (-1) Front
+print(isTerminal([[[" ", " ", "G"], [" ", " ", " "], [" ", " ", " "]], [[" ", "G", " "], [" ", " ", " "], [" ", " ", " "]], [["G", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+
+# win (1)
+print("Top Left Corner:")
+print(isTerminal([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]]], "R", 3))
+print("Top Right Corner:")
+print(isTerminal([[[" ", " ", "R"], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]]], "R", 3))
+print("Bottom Left Corner:")
+print(isTerminal([[[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]]], "R", 3))
+print("Bottom Right Corner:")
+print(isTerminal([[[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [["R", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+
+print("Front Side:")
+print(isTerminal([[[" ", "R", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", "R", " "]]], "R", 3))
+print("Left Side:")
+print(isTerminal([[[" ", " ", " "], ["R", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", "R"], [" ", " ", " "]]], "R", 3))
+print("Right Side:")
+print(isTerminal([[[" ", " ", " "], [" ", " ", "R"], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], ["R", " ", " "], [" ", " ", " "]]], "R", 3))
+print("Back Side:")
+print(isTerminal([[[" ", " ", " "], [" ", " ", " "], [" ", "R", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", "R", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
 
 def get_eval_value(new_board, heuristic, currPlayer, n):
     # check string, call on eval function
