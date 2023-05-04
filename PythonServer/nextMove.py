@@ -27,8 +27,8 @@ def get_next_move(board, heuristic, timeInterval, currPlayer, n):
     best_move = (0,0) # save best_move (value, position)
     start = time.perf_counter()
     print(start)
-    stop = time.perf_counter()
-    print(stop)
+    check = time.perf_counter()
+    print(time = check - start)
     # start time
     # loop through available moves and check evaluation value with alpha beta minimax iterative deepening
         # call on get_eval_value as looping through
@@ -333,9 +333,183 @@ def check_diagonals_on_sides(board, currPlayer, n):
 # print(check_diagonals_on_sides([[[" ", " ", " "], [" ", " ", " "], [" ", " ", "G"]], [[" ", " ", " "], [" ", " ", " "], [" ", "G", " "]], [[" ", " ", " "], [" ", " ", " "], ["G", " ", " "]]], "R", 3))
 
 
-# TODO 
 def check_diagonals_on_different_planes(board, currPlayer, n):
+    # diagonal top left corner 1st plane to bottom right last plane
+    col = 0
+    row = 0
+    plane = 0
+    value_to_check = board[plane][row][col]
+    if value_to_check != " ":
+        while plane < (n - 1):
+            col += 1
+            row += 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
+
+    # diagonal top right corner 1st plane to bottom left last plane
+    col = n - 1
+    row = 0
+    plane = 0
+    value_to_check = board[plane][row][col]
+    if value_to_check != " ":
+        while plane < (n - 1):
+            col -= 1
+            row += 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
+
+    # diagonal bottom left corner first plane to right last plane
+    col = 0
+    row = n - 1
+    plane = 0
+    value_to_check = board[plane][row][col]
+    if value_to_check != " ":
+        while plane < (n - 1):
+            col += 1
+            row -= 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
+
+    # diagonal bottom right corner irst plane to left last plane
+    col = n - 1
+    row = n - 1
+    plane = 0
+    value_to_check = board[plane][row][col]
+    if value_to_check != " ":
+        while plane < (n - 1):
+            col -= 1
+            row -= 1
+            plane += 1
+            if board[plane][row][col] == value_to_check:
+                continue
+            else:
+                break
+        if plane == (n - 1) and value_to_check == currPlayer:
+            return 1
+        if plane == (n - 1) and value_to_check != currPlayer:
+            return -1
+
+    # front sides to back sides
+    col = 1
+    row = 0
+    plane = 0
+    while col != (n - 1):
+        value_to_check = board[plane][row][col]
+        if value_to_check != " ":
+            while plane < (n - 1):
+                row += 1
+                plane += 1
+                if board[plane][row][col] == value_to_check:
+                    continue
+                else:
+                    break
+            if plane == (n - 1) and value_to_check == currPlayer:
+                return 1
+            if plane == (n - 1) and value_to_check != currPlayer:
+                return -1
+        col += 1
+
+    # right sides to left sides
+    col = n - 1
+    row = 1
+    plane = 0
+    while row != (n - 1):
+        value_to_check = board[plane][row][col]
+        if value_to_check != " ":
+            while plane < (n - 1):
+                col -= 1
+                plane += 1
+                if board[plane][row][col] == value_to_check:
+                    continue
+                else:
+                    break
+            if plane == (n - 1) and value_to_check == currPlayer:
+                return 1
+            if plane == (n - 1) and value_to_check != currPlayer:
+                return -1
+        row += 1
+
+    # left sides to right sides
+    col = 0
+    row = 1
+    plane = 0
+    while row != (n - 1):
+        value_to_check = board[plane][row][col]
+        if value_to_check != " ":
+            while plane < (n - 1):
+                col += 1
+                plane += 1
+                if board[plane][row][col] == value_to_check:
+                    continue
+                else:
+                    break
+            if plane == (n - 1) and value_to_check == currPlayer:
+                return 1
+            if plane == (n - 1) and value_to_check != currPlayer:
+                return -1
+        row += 1
+
+    # back sides to front sides
+    col = 1
+    row = n - 1
+    plane = 0
+    while col != (n - 1):
+        value_to_check = board[plane][row][col]
+        if value_to_check != " ":
+            while plane < (n - 1):
+                row -= 1
+                plane += 1
+                if board[plane][row][col] == value_to_check:
+                    continue
+                else:
+                    break
+            if plane == (n - 1) and value_to_check == currPlayer:
+                return 1
+            if plane == (n - 1) and value_to_check != currPlayer:
+                return -1
+        col += 1
+
     return None
+
+# win (1) 
+# print("Top Left Corner:")
+# print(check_diagonals_on_different_planes([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]]], "R", 3))
+# print("Top Right Corner:")
+# print(check_diagonals_on_different_planes([[[" ", " ", "R"], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]]], "R", 3))
+# print("Bottom Left Corner:")
+# print(check_diagonals_on_different_planes([[[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], ["R", " ", " "]]], "R", 3))
+# print("Bottom Right Corner:")
+# print(check_diagonals_on_different_planes([[[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [["R", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+
+# print("Front Side:")
+# print(check_diagonals_on_different_planes([[[" ", "R", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", "R", " "]]], "R", 3))
+# print("Left Side:")
+# print(check_diagonals_on_different_planes([[[" ", " ", " "], ["R", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", "R"], [" ", " ", " "]]], "R", 3))
+# print("Right Side:")
+# print(check_diagonals_on_different_planes([[[" ", " ", " "], [" ", " ", "R"], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], ["R", " ", " "], [" ", " ", " "]]], "R", 3))
+# print("Back Side:")
+# print(check_diagonals_on_different_planes([[[" ", " ", " "], [" ", " ", " "], [" ", "R", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", "R", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
 
 def get_eval_value(new_board, heuristic, currPlayer, n):
     # check string, call on eval function
@@ -480,7 +654,15 @@ def counting_marks_eval_function(new_board, currPlayer, n):
 # counting_marks_eval_function([[["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", "G", " "], ["R", "G", " "]]], "R", 3)
 
 def counting_neighbors_eval_function(new_board, currPlayer, n):
-    return None
+    score = 0
+    for plane, plane_value in enumerate(new_board):
+        for row, row_value in enumerate(plane_value):
+            for col, col_value in enumerate(row_value):
+                if col_value == currPlayer:
+                    score += 1
+                if col_value != currPlayer and col_value != " ":
+                    score -= 1
+    return score
 
 
 
