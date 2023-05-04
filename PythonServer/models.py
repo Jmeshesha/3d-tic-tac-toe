@@ -10,18 +10,60 @@ class Board:
         self.planes = request["planes"]
         self.rows = request["row"] 
         self.cols = request["cols"]
+        self.emptyPiece = request["emptyPiece"]
         self.board = []
+        self.moveStack = []
         self.inARow = request["inARow"]
         oldBoard = request["board"]
         counter = 0
+        self.possibleMoves = set()
         for i in range(self.planes):
             self.board.append([])
             for j in range(self.rows):
                 self.board[i].append([])
                 for k in range(self.cols):
+                    if(oldBoard[counter] == self.emptyPiece):
+                        self.possibleMoves.add((i, j, k))
                     self.board[i][j][k] = chr(oldBoard[counter])
                     counter += 1
         return True
+    
+    def isEmptyMoveStack(self):
+        return len(self.moveStack) == 0
+    def isTie(self):
+        return len(self.possibleMoves) == 0
+    def isWin(self):
+        pass
+    def getMoveStack(self):
+        return tuple(self.moveStack)
+        
+
+    def GetPossibleMoves(self):
+        return self.possibleMoves
+    
+    def MakeMove(self, move, player):
+        if move not in self.possibleMoves:
+            return False
+        (plane, row, col) = move
+        self.moveStack.append(move)
+        self.board[plane][row][col] = player
+        self.possibleMoves.discard(move)
+        return True
+    def UndoMove(self):
+        if len(self.moveStack) == 0:
+            return None
+        move = self.moveStack.pop()
+        if move in self.possibleMoves:
+            return None
+        (plane, row, col) = move
+        self.board[plane][row][col] = self.emptyPiece
+        self.possibleMoves.add(move)
+
+        
+        
+    def GetBoard(self):
+        return self.board
+    
     
     def BuildResponse(self):
         return None

@@ -58,6 +58,16 @@ public class BoardPlane : MonoBehaviour
         
 
     }
+    public void Teardown(){
+        for (int i = 0; i < plane.GetLength(0); i++)
+        {
+            for(int j = 0; j < plane.GetLength(1); j++)
+            {
+                Destroy(plane[i, j]);
+            }
+        }
+        Destroy(this);
+    }
 
     private void PlacePiece(int row, int col)
     {

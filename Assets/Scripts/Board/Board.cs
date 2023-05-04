@@ -133,6 +133,16 @@ class Board
         }
         return false;
     }
+    public bool RemovePiece(int plane, int row, int col)
+    {
+        if (!gameBoard[plane, row, col].Equals(emptySpot))
+        {
+            gameBoard[plane, row, col] = emptySpot;
+
+            return true;
+        }
+        return false;
+    }
 
 
     public bool IsTie()
@@ -153,6 +163,7 @@ class Board
         }
         return true;
     }
+
 
     public bool IsWinAt(int plane, int row, int col, char player)
     {
