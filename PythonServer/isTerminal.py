@@ -376,7 +376,6 @@ def isTerminal(board, currPlayer, n):
     col = 0
     empty_spaces = 0
     while plane != n:
-        print(plane, row, col)
         if row == n - 1 and col == n -1:
             col = 0
             row = 0
@@ -404,7 +403,6 @@ def isTerminal(board, currPlayer, n):
         if col == 0:
             temp_col = 0
             while temp_col < (n - 1):
-                print(board[plane][row][col])
                 temp_col += 1
                 if board[plane][row][temp_col] == current_value:
                     continue
@@ -463,9 +461,9 @@ def isTerminal(board, currPlayer, n):
     return None
 
 # TESTS
-print(isTerminal([[['r', 'r', 'r'], [' ', ' ', ' '], [' ', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]], 'g', 3))
-print(isTerminal([[['r', ' ', ' '], ['r', ' ', ' '], ['r', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]], 'g', 3))
-print(isTerminal([[['r', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [['r', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [['r', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]], 'g', 3))
+# print(isTerminal([[['r', 'r', 'r'], [' ', ' ', ' '], [' ', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]], 'g', 3))
+# print(isTerminal([[['r', ' ', ' '], ['r', ' ', ' '], ['r', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]], 'g', 3))
+# print(isTerminal([[['r', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [['r', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [['r', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]], 'g', 3))
 # win (1) Front
 # print("Front Sides:")
 # print(isTerminal([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]]], "R", 3))
