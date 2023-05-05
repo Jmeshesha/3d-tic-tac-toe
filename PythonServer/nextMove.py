@@ -232,6 +232,8 @@ def counting_marks_eval_function(new_board, currPlayer, n):
 # counting_marks_eval_function([[["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]]], "R", 3)
 # counting_marks_eval_function([[["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", " ", " "], ["R", " ", " "]], [["R", " ", " "], ["R", "G", " "], ["R", "G", " "]]], "R", 3)
 
+# +1 neighboring mark or neighboring space
+# -1 for neighboring opponent mark
 def counting_neighbors_eval_function(new_board, currPlayer, n):
     score = 0
     for plane, plane_value in enumerate(new_board):

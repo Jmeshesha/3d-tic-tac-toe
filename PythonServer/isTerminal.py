@@ -401,42 +401,46 @@ def isTerminal(board, currPlayer, n):
 
         # check for win or loss in each row
         if col == 0:
-            temp_col = 1
-            while temp_col <= n:
+            temp_col = 0
+            while temp_col < (n - 1):
+                temp_col += 1
                 if board[plane][row][temp_col] == current_value:
-                    temp_col += 1
+                    continue
                 else:
                     break
-            if temp_col > n and current_value == currPlayer:
+            if temp_col == (n - 1) and current_value == currPlayer:
                 return 1
-            if temp_col > n and current_value != currPlayer:
+            if temp_col == (n - 1) and current_value != currPlayer:
                 return -1
 
-            
+        current_value = board[plane][row][col]
         # check for win or loss vertically on one plane
         if row == 0:
-            temp_row = 1
-            while temp_row <= n:
+            temp_row = 0
+            while temp_row < (n - 1):
+                temp_row += 1
                 if board[plane][temp_row][col] == current_value:
-                    temp_row += 1
+                    continue
                 else:
                     break
-            if temp_row > n and current_value == currPlayer:
+            if temp_row == (n - 1) and current_value == currPlayer:
                 return 1
-            if temp_row > n and current_value != currPlayer:
+            if temp_row == (n - 1) and current_value != currPlayer:
                 return -1
 
+        current_value = board[plane][row][col]
         if plane == 0:
             # check for win or loss vertically on different planes
-            temp_plane = 1
-            while temp_plane <= n:
+            temp_plane = 0
+            while temp_plane < (n - 1):
+                temp_plane += 1
                 if board[temp_plane][row][col] == current_value:
-                    temp_plane += 1
+                    continue
                 else:
                     break
-            if temp_plane > n and current_value == currPlayer:
+            if temp_plane == (n - 1) and current_value == currPlayer:
                 return 1
-            if temp_plane > n and current_value != currPlayer:
+            if temp_plane == (n - 1) and current_value != currPlayer:
                 return -1
         col += 1
 
@@ -457,6 +461,9 @@ def isTerminal(board, currPlayer, n):
     return None
 
 # TESTS
+# print(isTerminal([[['r', 'r', 'r'], [' ', ' ', ' '], [' ', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]], 'g', 3))
+# print(isTerminal([[['r', ' ', ' '], ['r', ' ', ' '], ['r', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]], 'g', 3))
+# print(isTerminal([[['r', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [['r', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], [['r', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]], 'g', 3))
 # win (1) Front
 # print("Front Sides:")
 # print(isTerminal([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", "R", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", "R"]]], "R", 3))
