@@ -24,7 +24,6 @@ class PlayNextMoveEndpoint:
 
     def OnRequest(self, header, body, onError):
         # try:
-        print(body)
         # Example: Move(currPlayer, X-coordinate, Y-corrdinate, Z-coordinate)
         board = Board(body)
         return get_next_move(board, body["heuristic"], body["thinkTime"], chr(body["currPlayer"]), chr(body["opponent"]), body["inARow"], onError).BuildResponse()

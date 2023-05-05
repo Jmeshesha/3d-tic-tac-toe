@@ -28,7 +28,6 @@ def get_next_move(board, heuristic, timeInterval, currPlayer, opponent, n, onErr
         onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics")
     # NOTES
     # heuristic will be a string determining which evaluation function we use
-    print(heuristic, timeInterval, currPlayer, opponent, n)
     start_move = random.sample(tuple(board.GetPossibleMoves()), 1)[0]# save best_move (value, position)
     start = time.time()
     maxIteration = 1
@@ -39,7 +38,7 @@ def get_next_move(board, heuristic, timeInterval, currPlayer, opponent, n, onErr
         leftEarly = False
         for move in board.GetPossibleMoves():
             board.MakeMove(move, currPlayer)
-            evaluation = - minimax(opponent, currPlayer, board, n, onError, 1, maxIteration, heuristic, start, timeInterval)
+            evaluation = minimax(opponent, currPlayer, board, n, onError, 1, maxIteration, heuristic, start, timeInterval, False)
             if evaluation > bestEval:
                 iterationBestMove = move
                 bestEval = evaluation
@@ -59,29 +58,39 @@ def get_next_move(board, heuristic, timeInterval, currPlayer, opponent, n, onErr
     return Move(currPlayer, bestMove[0], bestMove[1], bestMove[2])
 
 # NEED TO FINISH
-def minimax(currPlayer, opponent, board, n, onError, iteration, maxIteration, heuristic, start_time, timeInterval):
-    # tie
-    
-    terminal = board.getTerminal(board.GetBoardList(), currPlayer)
+def minimax(currPlayer, opponent, board, n, onError, iteration, maxIteration, heuristic, start_time, timeInterval, isMax):
+    terminal = isTerminal(board.GetBoardList(), currPlayer, n)
     # win 
     if terminal == 1:
         return 1
     # loss 
-    elif terminal == -1:
+    if terminal == -1:
+        if iteration == 1:
+            print("loss", terminal, currPlayer)
         return -1
-    elif terminal == 0:
+    # tie
+    if terminal == 0:
         return 0
-    elif iteration >= maxIteration:
-        return get_eval_value(board.GetBoardList(), heuristic, currPlayer, n, onError) 
+    if iteration >= maxIteration:
+        return get_eval_value(board.GetBoardList(), heuristic, currPlayer, n, onError)
+    best_evaluation =  -2 # start at min value (min value should be -1 but going to do -2 just in case) 
+    if not isMax:
+        best_evaluation = 2
    
-    best_evaluation =  -2 # start at min value (min value should be -1 but going to do -2 just in case)
+    
+
     for move in board.GetPossibleMoves():
         board.MakeMove(move, currPlayer)
-        evaluation = - minimax(opponent, currPlayer, board, n, onError, iteration+1, maxIteration, heuristic, start_time, timeInterval)
+        evaluation = minimax(opponent, currPlayer, board, n, onError, iteration+1, maxIteration, heuristic, start_time, timeInterval, True)
         board.UndoMove()
-
-        if evaluation > best_evaluation:
-            best_evaluation = evaluation
+        if isMax:
+            if evaluation > best_evaluation:
+                best_evaluation = evaluation
+        else:
+            if evaluation < best_evaluation:
+                best_evaluation = evaluation
+        if best_evaluation == -2 or evaluation == 2:
+            print("Eval is bad!", evaluation)
         if (time.time() - start_time) >= timeInterval:
             break
     
@@ -97,7 +106,7 @@ def get_eval_value(new_board, heuristic, currPlayer, n, onError):
     if heuristic == HEURISTIC_2:
         return counting_marks_eval_function(new_board, currPlayer, n) / 10000
     if heuristic == HEURISTIC_3:
-        return counting_neighbors_eval_function(new_board, currPlayer, n) / 10000
+        return counting_neighbors_eval_function(new_board, currPlayer, n)/ 10000
     else:
         onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics")
 

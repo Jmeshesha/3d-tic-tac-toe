@@ -31,7 +31,6 @@ class Board:
                         self.possibleMoves.add((i, j, k))
                     self.board[i][j].append(chr(oldBoard[counter]))
                     counter += 1
-        print(self.board)
     
     def isEmptyMoveStack(self):
         return len(self.moveStack) == 0
