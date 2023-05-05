@@ -13,6 +13,8 @@ public class DynamicBackground : MonoBehaviour
     [SerializeField] private float player1WinLerp;
 
     [SerializeField] private float player2WinLerp;
+
+    [SerializeField] private bool changeOnGameEnd;
     private float targetLerpVal;
     private float[] playerWinLerp;
 
@@ -22,8 +24,11 @@ public class DynamicBackground : MonoBehaviour
         backgroundMat.SetFloat("_LerpVal", boardManager.GetCurrPlayer());
         playerWinLerp = new float[]{ player1WinLerp, player2WinLerp};
         boardManager.PlayerWin += PlayerWin;
-        boardManager.PlacePlayer += PlacePiece;
         boardManager.PlayerTie += PlayerTie;
+
+        
+        boardManager.PlacePlayer += PlacePiece;
+        boardManager.RemovePlayer += RemovePiece;
     }
 
     // Update is called once per frame
@@ -44,7 +49,9 @@ public class DynamicBackground : MonoBehaviour
         backgroundMat.SetFloat(fieldName, newVal);
 
     }
-
+    private void RemovePiece(int newPlayer) {
+        targetLerpVal = newPlayer;
+    }
     private void PlacePiece(int nextplayer)
     {
         targetLerpVal = nextplayer;

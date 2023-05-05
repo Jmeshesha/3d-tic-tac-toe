@@ -1,4 +1,5 @@
-from models import Move
+from models import Move, Board
+from nextMove import get_next_move
 class EndpointHandler:
     def __init__(self):
         self.endpointDict = {}
@@ -22,12 +23,14 @@ class PlayNextMoveEndpoint:
         pass
 
     def OnRequest(self, header, body, onError):
-        try:
-            print(body)
-            # Example: Move(currPlayer, X-coordinate, Y-corrdinate, Z-coordinate)
-            return Move(chr(body["currPlayer"]), 1, 0, 0).BuildResponse()
-        except:
-            onError(400, "Invalid request", "Request does not contain required fields in body")
+        # try:
+        # Example: Move(currPlayer, X-coordinate, Y-corrdinate, Z-coordinate)
+        board = Board(body)
+        return get_next_move(board, body["heuristic"], body["thinkTime"], chr(body["currPlayer"]), chr(body["opponent"]), body["inARow"], onError).BuildResponse()
+        # except Exception as e:
+        #     errorMsg = type(e).__name__ + ": " + str(e.args) 
+        #     print(errorMsg)
+        #     onError(400, "Invalid request", errorMsg)
         
 
 class PlayAIMatchEndpoint:

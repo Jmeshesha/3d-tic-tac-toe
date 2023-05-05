@@ -1305,9 +1305,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameboardManager: {fileID: 1518632331}
   basePath: localhost:8080
-  thinkTime: 2
+  thinkTime: 0
   port: 0
-  heuristic: 1
   playerIdx: 1
 --- !u!1 &541366678
 GameObject:
@@ -2274,11 +2273,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currPiece: 0
-  planes: 4
-  rows: 4
-  cols: 4
+  planes: 3
+  rows: 3
+  cols: 3
   startingPiece: 0
-  inARow: 4
+  inARow: 3
   planeSpacing: 2
   pieceSize: 1
   planeThickness: 0.1

@@ -1,14 +1,18 @@
 import time
+from isTerminal import isTerminal
+import random
+import math
+from models import Move
 # import reader from feed
 
 # takes in the current board and heuristic, and returns best possible move
 # A positive value of +1 is given to every n-in-a-row the player has, and a negative value of -1 is given
 # for every n-in-a-row the opponent has
-HEURISTIC_1 = "counting-n-rows"
+HEURISTIC_1 = "counting_n_rows"
 # adds a value for every mark that's the player's, minus for every mark that's the opponent's 
-HEURISTIC_2 = "counting-marks"
+HEURISTIC_2 = "counting_marks"
 # adds a positive value for every neighbor mark that's empty or the same, but subtracts for opponent's mark
-HEURISTIC_3 = "counting-neighbors"
+HEURISTIC_3 = "counting_neighbors"
 
 # Types:
 # heuristic : String
@@ -19,43 +23,90 @@ HEURISTIC_3 = "counting-neighbors"
 # n : size of board
 
 # TODO
-def get_next_move(board, heuristic, timeInterval, currPlayer, n):
+def get_next_move(board, heuristic, timeInterval, currPlayer, opponent, n, onError):
     if heuristic != HEURISTIC_1 and heuristic != HEURISTIC_2 and heuristic != HEURISTIC_3:
         onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics")
     # NOTES
     # heuristic will be a string determining which evaluation function we use
-    best_move = (0,0) # save best_move (value, position)
-    start = time.perf_counter()
-    print(start)
-    check = time.perf_counter()
-    print(time = check - start)
-    # start time
+    start_move = random.sample(tuple(board.GetPossibleMoves()), 1)[0]# save best_move (value, position)
+    start = time.time()
+    maxIteration = 1
+    bestMove = start_move
+    while (time.time() - start) < timeInterval:
+        bestEval = - 1
+        iterationBestMove = start_move
+        leftEarly = False
+        for move in board.GetPossibleMoves():
+            board.MakeMove(move, currPlayer)
+            evaluation = minimax(opponent, currPlayer, board, n, onError, 1, maxIteration, heuristic, start, timeInterval, False)
+            if evaluation > bestEval:
+                iterationBestMove = move
+                bestEval = evaluation
+            board.UndoMove()
+            if (time.time() - start) >= timeInterval:
+                leftEarly = True
+                break
+        maxIteration += 1
+        if not leftEarly:
+            bestMove = iterationBestMove
+        # start time
     # loop through available moves and check evaluation value with alpha beta minimax iterative deepening
         # call on get_eval_value as looping through
     # do minimax until time runs out
     # returns best move at the end
-    return best_move[1]
+
+    return Move(currPlayer, bestMove[0], bestMove[1], bestMove[2])
 
 # NEED TO FINISH
-def minimax(isMaxTurn, currPlayer, board, n):
+def minimax(currPlayer, opponent, board, n, onError, iteration, maxIteration, heuristic, start_time, timeInterval, isMax):
+    terminal = isTerminal(board.GetBoardList(), currPlayer, n)
     # win 
-    if isTerminal(board, currPlayer, n) == 1:
+    if terminal == 1:
         return 1
     # loss 
-    elif isTerminal(board, currPlayer, n) == -1:
+    if terminal == -1:
+        if iteration == 1:
+            print("loss", terminal, currPlayer)
         return -1
     # tie
-    elif isTerminal(board, currPlayer, n) == 0:
+    if terminal == 0:
         return 0
+    if iteration >= maxIteration:
+        return get_eval_value(board.GetBoardList(), heuristic, currPlayer, n, onError)
+    best_evaluation =  -2 # start at min value (min value should be -1 but going to do -2 just in case) 
+    if not isMax:
+        best_evaluation = 2
+   
+    
 
-def get_eval_value(new_board, heuristic, currPlayer, n):
+    for move in board.GetPossibleMoves():
+        board.MakeMove(move, currPlayer)
+        evaluation = minimax(opponent, currPlayer, board, n, onError, iteration+1, maxIteration, heuristic, start_time, timeInterval, True)
+        board.UndoMove()
+        if isMax:
+            if evaluation > best_evaluation:
+                best_evaluation = evaluation
+        else:
+            if evaluation < best_evaluation:
+                best_evaluation = evaluation
+        if best_evaluation == -2 or evaluation == 2:
+            print("Eval is bad!", evaluation)
+        if (time.time() - start_time) >= timeInterval:
+            break
+    
+    return best_evaluation
+
+    
+
+
+def get_eval_value(new_board, heuristic, currPlayer, n, onError):
     # check string, call on eval function
     if heuristic == HEURISTIC_1:
-        return counting_n_rows_eval_function(new_board, currPlayer, n)
+        return counting_n_rows_eval_function(new_board, currPlayer, n) / 10000
     if heuristic == HEURISTIC_2:
-        counting_marks_eval_function(new_board, currPlayer, n)
+        return counting_marks_eval_function(new_board, currPlayer, n) / 10000
     if heuristic == HEURISTIC_3:
-        counting_neighbors_eval_function(new_board, currPlayer, n)
+        return counting_neighbors_eval_function(new_board, currPlayer, n)/ 10000
     else:
         onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics")
 

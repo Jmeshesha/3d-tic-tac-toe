@@ -8,8 +8,11 @@ namespace Models
         public int rows;
         public int cols;
         public char currPlayer;
+        public char opponent;
         public char emptyPiece;
         public float thinkTime;
+        public int inARow;
+        public string heuristic;
         public char[] board;
 
         public void SetupBoard(char[,,] oldboard)
