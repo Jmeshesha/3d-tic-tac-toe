@@ -50,7 +50,10 @@ public class BoardGameObj : MonoBehaviour
             Setup();
         }
     }
-
+    public int GetInARow()
+    {
+        return inARow;
+    }
     public void Teardown(){
         for(int i = 0; i < planeList.Count; i++){
             planeList[i].Teardown();

@@ -1,39 +1,44 @@
 class Board:
     def __init__(self, request):
-        if not self.BuildObjectFromRequest(request):
-             raise Exception("Request does not contain required fields for board!") 
+        self.BuildObjectFromRequest(request)
     def BuildObjectFromRequest(self, request):
-        required_fields = ["board", "planes", "rows", "cols", "InARow"]
+        required_fields = ["board", "planes", "rows", "cols", "inARow", "emptyPiece"]
+        unavailable_fields = ""
         for field in required_fields:
             if field not in request:
-                return False
+                unavailable_fields += ", "+ field
+        if len(unavailable_fields) > 0:
+            raise Exception("Request does not contain required fields for board: " + unavailable_fields) 
+        
         self.planes = request["planes"]
-        self.rows = request["row"] 
+        self.rows = request["rows"] 
         self.cols = request["cols"]
-        self.emptyPiece = request["emptyPiece"]
+        self.emptyPiece = chr(request["emptyPiece"])
         self.board = []
         self.moveStack = []
         self.inARow = request["inARow"]
         oldBoard = request["board"]
         counter = 0
+        self.winner = " "
+        self.isTerminal = False
         self.possibleMoves = set()
         for i in range(self.planes):
             self.board.append([])
             for j in range(self.rows):
                 self.board[i].append([])
                 for k in range(self.cols):
-                    if(oldBoard[counter] == self.emptyPiece):
+                    if(chr(oldBoard[counter]) == self.emptyPiece):
                         self.possibleMoves.add((i, j, k))
-                    self.board[i][j][k] = chr(oldBoard[counter])
+                    self.board[i][j].append(chr(oldBoard[counter]))
                     counter += 1
-        return True
+        print(self.board)
     
     def isEmptyMoveStack(self):
         return len(self.moveStack) == 0
     def isTie(self):
         return len(self.possibleMoves) == 0
-    def isWin(self):
-        pass
+    def GetBoardList(self):
+        return self.board
     def getMoveStack(self):
         return tuple(self.moveStack)
         
@@ -49,6 +54,7 @@ class Board:
         self.board[plane][row][col] = player
         self.possibleMoves.discard(move)
         return True
+
     def UndoMove(self):
         if len(self.moveStack) == 0:
             return None

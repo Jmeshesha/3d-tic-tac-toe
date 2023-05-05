@@ -1305,8 +1305,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameboardManager: {fileID: 1518632331}
   basePath: localhost:8080
-  thinkTime: 0
+  thinkTime: 2
   port: 0
+  heuristic: 0
   playerIdx: 1
 --- !u!1 &541366678
 GameObject:
