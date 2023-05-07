@@ -11,6 +11,7 @@ public class BoardGameObj : MonoBehaviour
 
     public OnPlayerAction PlayerWin;
     public OnPlayerAction PlacePlayer;
+    public OnPlayerAction RemovePlayer;
 
     public Action PlayerTie;
 
@@ -31,23 +32,55 @@ public class BoardGameObj : MonoBehaviour
     [SerializeField] private float planeThickness;
 
     [SerializeField] private BoardPlane planePrefab;
+    [SerializeField] private bool setupOnStart;
 
     [SerializeField] private Piece piecePrefab;
     private List<Models.Move> moveHistory;
 
     private bool gameOver;
 
+    private bool isSetup = false;
+
     private List<BoardPlane> planeList = new List<BoardPlane>();
     // Start is called before the first frame update
     void Start()
     {
+        if(setupOnStart){
+            isSetup = false;
+            Setup();
+        }
+    }
+    public int GetInARow()
+    {
+        return inARow;
+    }
+    public void Teardown(){
+        for(int i = 0; i < planeList.Count; i++){
+            planeList[i].Teardown();
+        }
+        planeList.Clear();
+        isSetup = false;
+    }
+
+    public void Setup(int planes, int rows, int cols, int inARow){
+        if(isSetup){
+            return;
+        }
+        this.planes = planes;
+        this.rows = rows;
+        this.cols = cols;
+        this.inARow = inARow;
         gameboard = new Board(planes, rows, cols, inARow, pieces[0], pieces[1], emptyPiece);
         currPiece = startingPiece;
         MakePlanes();
         gameOver = false;
         moveHistory = new List<Move>();
+        isSetup = true;
     }
 
+    public void Setup(){
+        Setup(planes, rows, cols, inARow);
+    }
     public char GetEmptyPiece()
     {
         return emptyPiece;
@@ -75,6 +108,9 @@ public class BoardGameObj : MonoBehaviour
 
     public bool PlacePiece(Piece piece, int player)
     {
+        if(!isSetup){
+            return false;
+        }
         if (gameOver || currPiece != player)
         {
             return false;
@@ -115,6 +151,9 @@ public class BoardGameObj : MonoBehaviour
 
     public List<Move> GetMoveHistory()
     {
+        if(!isSetup){
+            return null;
+        }
         return moveHistory;
     }
 
@@ -130,11 +169,17 @@ public class BoardGameObj : MonoBehaviour
     }
     public char[,,] GetBoard()
     {
+        if(!isSetup){
+            return null;
+        }
         return gameboard.GetBoard();
     }
 
     public char GetPlayerChar(int player)
     {
+        if(!isSetup){
+            return '\0';
+        }
         if(player < 0 || player > 1)
         {
             return ' ';
@@ -144,13 +189,42 @@ public class BoardGameObj : MonoBehaviour
 
     public bool PlacePiece(int plane, int row, int col, int player)
     {
+        if(!isSetup){
+            return false;
+        }
         Piece piece = planeList[plane].GetPiece(row, col);
-
         
-
         return PlacePiece(piece, player);
     }
 
+    public bool RemovePiece(Piece piece){
+        if(!isSetup){
+            return false;
+        }
+
+        Vector3Int position = piece.GetCoords();
+        if (!gameboard.RemovePiece(position.x, position.y, position.z))
+        {
+            return false;
+        }
+        piece.HidePiece();
+
+        currPiece = (currPiece + 1) % pieces.Length;
+        RemovePlayer.Invoke(currPiece);
+
+        
+        return true;
+    }
+    public bool RemovePiece(int plane, int row, int col) {
+        if(!isSetup){
+            return false;
+        }
+
+        Piece piece = planeList[plane].GetPiece(row, col);
+
+
+        return RemovePiece(piece);
+    }
     public int GetCurrPlayer()
     {
         return currPiece;

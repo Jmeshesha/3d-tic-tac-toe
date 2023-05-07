@@ -5,6 +5,13 @@ using Models;
 using System;
 using Proyecto26;
 
+public enum Heuristic
+{
+    counting_n_rows,
+    counting_marks,
+    counting_neighbors,
+
+}
 public class AIPlayer : MonoBehaviour
 {
     [SerializeField] private BoardGameObj gameboardManager;
@@ -12,10 +19,12 @@ public class AIPlayer : MonoBehaviour
     [SerializeField] private string basePath;
     [SerializeField] private float thinkTime;
     [SerializeField] private int port;
+    [SerializeField] private Heuristic heuristic;
+
     [SerializeField] [Range(0, 1)] private int playerIdx;
     private bool isTurn = false;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         gameboardManager.PlacePlayer += OnPlacePiece;
         isTurn = false;
@@ -46,7 +55,10 @@ public class AIPlayer : MonoBehaviour
         board.SetupBoard(gameboardManager.GetBoard());
         board.currPlayer = gameboardManager.GetPlayerChar(playerIdx);
         board.emptyPiece = gameboardManager.GetEmptyPiece();
+        board.opponent = gameboardManager.GetPlayerChar(1 - playerIdx);
+        board.heuristic = heuristic.ToString();
         board.thinkTime = thinkTime;
+        board.inARow = gameboardManager.GetInARow();
         RequestHelper request = new RequestHelper
         {
             Uri = basePath + "/PlayNextMove",
