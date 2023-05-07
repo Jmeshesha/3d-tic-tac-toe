@@ -60,7 +60,7 @@ def get_eval_value(new_board, heuristic, currPlayer, n):
         onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics")
 
 
-# TODO check diagonals on different planes
+# TODO
 def counting_n_rows_eval_function(new_board, currPlayer, n):
     # if there's an error
     col = 0
@@ -194,15 +194,80 @@ def counting_marks_eval_function(new_board, currPlayer, n):
 # -1 for neighboring opponent mark
 def counting_neighbors_eval_function(new_board, currPlayer, n):
     score = 0
-    for plane, plane_value in enumerate(new_board):
-        for row, row_value in enumerate(plane_value):
-            for col, col_value in enumerate(row_value):
-                if col_value == currPlayer:
+    plane = 0
+    row = 0
+    col = 0
+    while plane < n:
+        current_value = new_board[plane][row][col]
+        print(plane, row, col)
+        # print(current_value)
+        if current_value == currPlayer:
+            # left side
+            if col != 0:
+                if new_board[plane][row][col - 1] == currPlayer or new_board[plane][row][col - 1] == " ":
                     score += 1
-                if col_value != currPlayer and col_value != " ":
+                else:
                     score -= 1
+            # right side
+            if col != (n - 1):
+                if new_board[plane][row][col + 1] == currPlayer or new_board[plane][row][col + 1] == " ":
+                    score += 1
+                else: 
+                    score -= 1
+            # bottom
+            if row != (n - 1):
+                if new_board[plane][row + 1][col] == currPlayer or new_board[plane][row + 1][col] == " ":
+                    score += 1
+                else:
+                    score -= 1
+            # top
+            if row != 0:
+                if new_board[plane][row - 1][col] == currPlayer or new_board[plane][row - 1][col] == " ":
+                    score += 1
+                else:
+                    score -= 1
+            # left top diagonal
+            if row != 0 and col != 0:
+                if new_board[plane][row - 1][col - 1] == currPlayer or new_board[plane][row - 1][col - 1] == " ":
+                    score += 1
+                else:
+                    score -= 1
+            # right top diagonal
+            if row != 0 and col != (n - 1):
+                if new_board[plane][row - 1][col + 1] == currPlayer or new_board[plane][row - 1][col + 1] == " ":
+                    score += 1
+                else:
+                    score -= 1
+            # left bottom diagonal
+            if row != (n - 1) and col != 0:
+                if new_board[plane][row + 1][col - 1] == currPlayer or new_board[plane][row + 1][col - 1] == " ":
+                    score += 1
+                else:
+                    score -= 1
+            # right bottom diagonal
+            if row != (n - 1) and col != (n - 1):
+                if new_board[plane][row + 1][col + 1] == currPlayer or new_board[plane][row + 1][col + 1] == " ":
+                    score += 1
+                else:
+                    score -= 1
+        if row == n - 1 and col == n - 1:
+            col = 0
+            row = 0
+            plane += 1
+            continue
+
+        if col == n - 1:
+            col = 0
+            row += 1
+            continue
+        col += 1
     return score
 
 
-
-# get_next_move([[["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]], [["R", "G", " "], ["R", "G", " "], ["R", "G", " "]]], "counting-marks", 2, "R", 3)
+print(counting_neighbors_eval_function([[["R", " ", "R", "R"], [" ", "R", " ", "R"], [" ", "R", " ", "R"], [" ", "R", " ", "R"]], [[" ", " ", " ", "R"], [" ", " ", " ", "R"], [" ", " ", " ", "R"], [" ", "R", " ", "R"]], [[" ", " ", " ", "R"], [" ", " ", " ", "R"], [" ", " ", " ", "R"], [" ", "R", " ", "R"]], [[" ", " ", " ", "R"], [" ", " ", " ", "R"], [" ", " ", " ", "R"], [" ", "R", " ", "R"]]], "R", 4))
+# print(counting_neighbors_eval_function([[["R", " ", "R"], [" ", "R", " "], [" ", "R", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+# print(counting_neighbors_eval_function([[["R", "G", "R"], ["G", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+# print(counting_neighbors_eval_function([[["R", "G", "R"], [" ", "G", " "], ["G", " ", " "]], [[" ", " ", "G"], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+# print(counting_neighbors_eval_function([[["R", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+# print(counting_neighbors_eval_function([[["G", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
+# print(counting_neighbors_eval_function([[[" ", " ", " "], [" ", "R", " "], [" ", "R", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", "G", " "]], [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]], "R", 3))
