@@ -48,7 +48,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _LerpVal: 0.00000219965
+    - _LerpVal: 0.0010924723
     - _QueueControl: 0
     - _QueueOffset: 0
     - _hardness: 0.19

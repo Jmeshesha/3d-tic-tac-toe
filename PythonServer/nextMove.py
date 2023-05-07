@@ -31,22 +31,29 @@ def get_next_move(board, heuristic, timeInterval, currPlayer, opponent, n, onErr
     start_move = random.sample(tuple(board.GetPossibleMoves()), 1)[0]# save best_move (value, position)
     start = time.time()
     maxIteration = 1
-    bestMove = start_move
+    bestMove = start_move 
+    
     while (time.time() - start) < timeInterval:
         bestEval = - 1
         iterationBestMove = start_move
         leftEarly = False
+        state_dict = {}
         for move in board.GetPossibleMoves():
             board.MakeMove(move, currPlayer)
-            evaluation = minimax(opponent, currPlayer, board, n, onError, 1, maxIteration, heuristic, start, timeInterval, False)
+            evaluation = minimax(currPlayer, opponent, board, n, onError, 1, maxIteration, heuristic, start, timeInterval, False, state_dict, move)
+            #state_dict[board.getMoveStack()] = (evaluation, True)
             if evaluation > bestEval:
                 iterationBestMove = move
                 bestEval = evaluation
             board.UndoMove()
+            if bestEval >= 1:
+                break
+            #print(terminal, currPlayer)
             if (time.time() - start) >= timeInterval:
                 leftEarly = True
                 break
         maxIteration += 1
+        
         if not leftEarly:
             bestMove = iterationBestMove
         # start time
@@ -58,21 +65,24 @@ def get_next_move(board, heuristic, timeInterval, currPlayer, opponent, n, onErr
     return Move(currPlayer, bestMove[0], bestMove[1], bestMove[2])
 
 # NEED TO FINISH
-def minimax(currPlayer, opponent, board, n, onError, iteration, maxIteration, heuristic, start_time, timeInterval, isMax):
-    terminal = isTerminal(board.GetBoardList(), currPlayer, n)
+def minimax(maxPlayer, minPlayer, board, n, onError, iteration, maxIteration, heuristic, start_time, timeInterval, isMax, state_dict, move):
+    currPlayer = minPlayer
+    
+    if isMax:
+        currPlayer = maxPlayer
+    terminal = board.getTerminalVal(maxPlayer)
+    #print(terminal, opponent, move)
     # win 
     if terminal == 1:
         return 1
     # loss 
     if terminal == -1:
-        if iteration == 1:
-            print("loss", terminal, currPlayer)
         return -1
     # tie
     if terminal == 0:
         return 0
     if iteration >= maxIteration:
-        return get_eval_value(board.GetBoardList(), heuristic, currPlayer, n, onError)
+        return get_eval_value(board.GetBoardList(), heuristic, maxPlayer, n, onError)
     best_evaluation =  -2 # start at min value (min value should be -1 but going to do -2 just in case) 
     if not isMax:
         best_evaluation = 2
@@ -81,16 +91,20 @@ def minimax(currPlayer, opponent, board, n, onError, iteration, maxIteration, he
 
     for move in board.GetPossibleMoves():
         board.MakeMove(move, currPlayer)
-        evaluation = minimax(opponent, currPlayer, board, n, onError, iteration+1, maxIteration, heuristic, start_time, timeInterval, True)
+        
+        evaluation = minimax(maxPlayer, minPlayer, board, n, onError, iteration+1, maxIteration, heuristic, start_time, timeInterval, not isMax, state_dict, move)
+        #print(evaluation)
         board.UndoMove()
         if isMax:
             if evaluation > best_evaluation:
                 best_evaluation = evaluation
+                if best_evaluation >= 1:
+                    return 1
         else:
             if evaluation < best_evaluation:
                 best_evaluation = evaluation
-        if best_evaluation == -2 or evaluation == 2:
-            print("Eval is bad!", evaluation)
+            if best_evaluation <= -1:
+                    return -1
         if (time.time() - start_time) >= timeInterval:
             break
     

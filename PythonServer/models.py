@@ -64,7 +64,52 @@ class Board:
         self.board[plane][row][col] = self.emptyPiece
         self.possibleMoves.add(move)
 
+    def isInBounds(self, move):
+        planeInBounds = move[0] >= 0 and move[0] < len(self.board)
+        rowInBounds = move[1] >= 0 and move[1] < len(self.board[0])
+        colInBounds = move[2] >= 0 and move[2] < len(self.board[0][0])
+        return planeInBounds and rowInBounds and colInBounds
+    def checkWin(self, move, delta):
+        if delta[0] == 0 and delta[1] == 0 and delta[2] == 0:
+            return False
+        inARowCounter = 1
+        if not self.isInBounds(move):
+            return False
+        currPos = (move[0] + delta[0], move[1] + delta[1], move[2] + delta[2])
+        player = self.board[move[0]][move[1]][move[2]]
+        while self.isInBounds(currPos) and self.board[currPos[0]][currPos[1]][currPos[2]] == player:
+            inARowCounter += 1
+            currPos = (currPos[0] + delta[0], currPos[1] + delta[1], currPos[2] + delta[2])
+
+        currPos = (move[0] - delta[0], move[1] - delta[1], move[2] - delta[2])
         
+        while self.isInBounds(currPos) and self.board[currPos[0]][currPos[1]][currPos[2]] == player:
+            inARowCounter += 1
+            currPos = (currPos[0] - delta[0], currPos[1] - delta[1], currPos[2] - delta[2])
+        if(inARowCounter >= self.inARow):
+            print("InArow")
+        return inARowCounter >= self.inARow
+        
+
+
+    def getTerminalVal(self, player):
+        if self.isEmptyMoveStack():
+            return None
+        if self.isTie():
+            return 0
+        move = self.moveStack[-1]
+        if self.board[move[0]][move[1]][move[2]] == self.emptyPiece:
+            return None
+        coefficient = -1
+        if self.board[move[0]][move[1]][move[2]] == player:
+            coefficient = 1
+        for xDelta in range(-1, 2):
+            for yDelta in range(-1, 2):
+                for zDelta in range(-1, 2):
+                    if self.checkWin(move, (xDelta, yDelta, zDelta)):
+                        return coefficient
+        
+        return None
         
     def GetBoard(self):
         return self.board
