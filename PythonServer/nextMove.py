@@ -13,6 +13,7 @@ HEURISTIC_1 = "counting_n_rows"
 HEURISTIC_2 = "counting_marks"
 # adds a positive value for every neighbor mark that's empty or the same, but subtracts for opponent's mark
 HEURISTIC_3 = "counting_neighbors"
+HEURISTIC_4 = "random"
 
 # Types:
 # heuristic : String
@@ -24,7 +25,7 @@ HEURISTIC_3 = "counting_neighbors"
 
 # TODO
 def get_next_move(board, heuristic, timeInterval, currPlayer, opponent, n, onError):
-    if heuristic != HEURISTIC_1 and heuristic != HEURISTIC_2 and heuristic != HEURISTIC_3:
+    if heuristic != HEURISTIC_1 and heuristic != HEURISTIC_2 and heuristic != HEURISTIC_3 and heuristic != HEURISTIC_4:
         onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics")
     # NOTES
     # heuristic will be a string determining which evaluation function we use
@@ -70,7 +71,9 @@ def minimax(maxPlayer, minPlayer, board, n, onError, iteration, maxIteration, he
     
     if isMax:
         currPlayer = maxPlayer
+    
     terminal = board.getTerminalVal(maxPlayer)
+    #terminal = isTerminal(board.GetBoardList(), maxPlayer, n)
     #print(terminal, opponent, move)
     # win 
     if terminal == 1:
@@ -110,20 +113,24 @@ def minimax(maxPlayer, minPlayer, board, n, onError, iteration, maxIteration, he
     
     return best_evaluation
 
-    
+def sigmoid(x):
+    return 2 / (1+math.e ** (-x)) - 1
 
 
 def get_eval_value(new_board, heuristic, currPlayer, n, onError):
     # check string, call on eval function
     if heuristic == HEURISTIC_1:
-        return counting_n_rows_eval_function(new_board, currPlayer, n) / 10000
-    if heuristic == HEURISTIC_2:
-        return counting_marks_eval_function(new_board, currPlayer, n) / 10000
-    if heuristic == HEURISTIC_3:
-        return counting_neighbors_eval_function(new_board, currPlayer, n)/ 10000
+        return sigmoid(counting_n_rows_eval_function(new_board, currPlayer, n))
+    elif heuristic == HEURISTIC_2:
+        return sigmoid(counting_marks_eval_function(new_board, currPlayer, n))
+    elif heuristic == HEURISTIC_3:
+        return sigmoid(counting_neighbors_eval_function(new_board, currPlayer, n))
+    elif heuristic == HEURISTIC_4:
+        return sigmoid(random_eval_function())
     else:
-        onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics")
-
+        onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics: " + heuristic)
+def random_eval_function():
+    return random.uniform(-1, 1)
 def check_diagonals_on_plane(board, currPlayer, n, plane, score):
     # top left down
     row = 0

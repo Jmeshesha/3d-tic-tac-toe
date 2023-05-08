@@ -86,8 +86,6 @@ class Board:
         while self.isInBounds(currPos) and self.board[currPos[0]][currPos[1]][currPos[2]] == player:
             inARowCounter += 1
             currPos = (currPos[0] - delta[0], currPos[1] - delta[1], currPos[2] - delta[2])
-        if(inARowCounter >= self.inARow):
-            print("InArow")
         return inARowCounter >= self.inARow
         
 
