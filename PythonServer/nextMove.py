@@ -126,10 +126,14 @@ def get_eval_value(new_board, heuristic, currPlayer, n, onError):
     elif heuristic == HEURISTIC_3:
         return sigmoid(counting_neighbors_eval_function(new_board, currPlayer, n))
     elif heuristic == HEURISTIC_4:
-        return sigmoid(random_eval_function())
+        return sigmoid(random_eval_function(n))
     else:
         onError(400, "Invalid Heuristic", "name of heuristic does not match acceptable heuristics: " + heuristic)
-def random_eval_function():
+def random_eval_function(n):
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                pass ## to ensure fairness in terms of time ran
     return random.uniform(-1, 1)
 def check_diagonals_on_plane(board, currPlayer, n, plane, score):
     # top left down

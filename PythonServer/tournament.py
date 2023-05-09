@@ -35,8 +35,7 @@ def run_tournaments(planes, rows, cols, n, heuristics, timePerTurn, tournaments_
         heuristic_order = random.choice(list(permutations(heuristics, len(heuristics))))
         wins[run_tournament(planes, rows, cols, n, heuristic_order, timePerTurn)] += 1
         counter += 1
-    print(wins)
+    for heuristic in heuristics:
+        wins[heuristic] /= tournaments_amount
     return wins
         
-
-run_tournaments(5, 5, 5, 5, ["counting_n_rows", "counting_marks", "counting_neighbors"], 0.01, 100)
