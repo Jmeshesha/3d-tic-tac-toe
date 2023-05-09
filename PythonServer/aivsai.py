@@ -11,14 +11,12 @@ def ai_v_ai(planes, rows, cols, n, heuristic1, heuristic2, timePerTurn, onError)
         "cols": cols,
         "inARow": n,
         "emptyPiece": ord(" ")
-
     }
     player1 = ord("R")
     player2 = ord("G")    
     board = Board(request)
     turn = 0
     terminalVal = None
-    print(heuristic1, " vs ", heuristic2)
     while(terminalVal == None):
         if turn % 2 == 0:
             takeTurn(player1, player2, board, heuristic1, timePerTurn, n, onError)
